@@ -1,0 +1,15 @@
+\usepackage[backend=biber,style=authoryear-comp]{biblatex}
+
+\ExecuteBibliographyOptions{sorting=ynt} %Year, name, title. Ensures that in-text citations are ordered chronologically.
+\assignrefcontextentries[]{*} %Assigns all citations to the global refcontext, the sorting above.
+%We will use a different refcontext around the bibliography to sort that by name.
+
+%There are some options we only want to apply in the bibliography, so here's a nasty hack.
+\let\printinnerbibliography\printbibliography %Copy the original command so we can modify it
+\renewcommand{\printbibliography}[1][]{
+	\begingroup
+	\begin{refcontext}[sorting=nyt] %Sorts the bibliography by name, then year, then title.
+		\printinnerbibliography[#1]
+	\end{refcontext}
+	\endgroup
+}
