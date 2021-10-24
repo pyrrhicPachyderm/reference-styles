@@ -1,0 +1,99 @@
+%Intended to match the style of "Ecology", the Journal published by the Ecological Society of America.
+
+\usepackage{xpatch}
+
+\input{authoryear}
+
+%%%%%%%%%%%%%%%
+%Remove fields.
+%%%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{doi=false,isbn=false} %Disable unique identifier/online-link fields.
+\AtEveryBibitem{\clearfield{number}} %Remove issue numbers, but leave volume numbers.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Number of authors to list.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{maxcitenames=2,mincitenames=1} %In-text, two authors are listed in full, but three or more are first author and et al.
+\ExecuteBibliographyOptions{maxbibnames=10,minbibnames=1} %In the bibliography, up to ten authors are listed in full, but anything exceeding that is one author and et al.
+\ExecuteBibliographyOptions{uniquelist=false} %Disable disambiguation that would violate the min/max names specified.
+
+%%%%%%%%%%%%%
+%Misc. fixes.
+%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{dashed=false} %Ensure that two papers by the same author are listed in full in the bibliography.
+\ExecuteBibliographyOptions{uniquename=false} %Disable in-citation disambiguation of shared surnames.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bibliography entry formatting.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%
+%Names.
+%%%%%%%
+
+%The default ordering is "surname, given name" for the first author and "given name surname" for subsequent authors; we keep this.
+
+\ExecuteBibliographyOptions{giveninits=true} %Print only initials of given names.
+
+%Add a comma after the first of two authors, in the bibliography but not in-text.
+\AtBeginBibliography{%
+	%Adapting https://tex.stackexchange.com/a/48375 using xpatch.
+	\xpatchcmd{\finalnamedelim}{%
+		\ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+	}{%
+		\finalandcomma%
+	}{}{}%
+}
+
+%%%%%
+%All.
+%%%%%
+
+\renewbibmacro{in:}{} %Remove "In:" before journal titles etc.
+
+%Instead of putting the year in brackets, give it no brackets and a full stop before it.
+\xpatchbibmacro{date+extradate}{%
+	\printtext[parens]%
+}{%
+	\setunit{\addperiod\space}%
+	\printtext%
+}{}{}
+
+%%%%%%%%%%
+%Articles.
+%%%%%%%%%%
+
+\DeclareFieldFormat[article]{title}{#1} %No quotes around article titles.
+\DeclareFieldFormat[article]{journaltitle}{#1} %No italics in journal title.
+\DeclareFieldFormat[article]{pages}{#1} %Remove pp. bfore page range.
+
+%Replace the comma and space before the page range with a colon and no space, but only in articles.
+\renewcommand{\bibpagespunct}{%
+	\ifentrytype{article}{\addcolon}{\addcomma\addspace}%
+}
+
+%%%%%%%
+%Books.
+%%%%%%%
+
+\DeclareFieldFormat[book]{title}{#1} %No italics in book title.
+
+%Swap so that publisher comes *before* location, and is separated by a comma rather than a colon.
+\xpatchbibmacro{publisher+location+date}{%
+	\printlist{location}%
+	\iflistundef{publisher}
+		{\setunit*{\addcomma\space}}
+		{\setunit*{\addcolon\space}}%
+	\printlist{publisher}%
+}{%
+	\printlist{publisher}%
+	\iflistundef{location}
+		{}
+		{\setunit*{\addcomma\space}}%%
+	\printlist{location}%
+}{}{}
