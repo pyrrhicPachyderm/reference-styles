@@ -105,3 +105,34 @@
 		{\setunit*{\addcomma\space}}%%
 	\printlist{location}%
 }{}{}
+
+%%%%%%%%%
+%Inbooks.
+%%%%%%%%%
+
+\DeclareFieldFormat[inbook]{title}{#1} %No quotes around chapter title.
+\DeclareFieldFormat[inbook]{booktitle}{#1} %No italics in book title.
+
+\DeclareFieldFormat[inbook]{pages}{#1} %Remove pp. bfore page range.
+
+%Change the period to a comma between booktitle and editors, and
+%move the page range to after the editors.
+\xpatchbibdriver{inbook}{%
+	\usebibmacro{chapter+pages}%
+	\newunit\newblock
+}{%
+	%Replace with nothing.
+}{}{}
+\xpatchbibdriver{inbook}{%
+	\usebibmacro{maintitle+booktitle}%
+	\newunit\newblock
+	\usebibmacro{byeditor+others}%
+	\newunit\newblock
+}{%
+	\usebibmacro{maintitle+booktitle}%
+	\setunit{\addcomma\space}\newblock
+	\usebibmacro{byeditor+others}%
+	\setunit{\addcomma\space}\newblock
+	\usebibmacro{chapter+pages}%
+	\newunit\newblock
+}{}{}
