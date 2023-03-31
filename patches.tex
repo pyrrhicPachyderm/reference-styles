@@ -1,0 +1,13 @@
+%Make \fullcite respect the maxnames option.
+%From https://tex.stackexchange.com/a/375599
+%In turn from https://tex.stackexchange.com/a/126245
+\makeatletter
+\DeclareCiteCommand{\fullcite}
+  {\defcounter{maxnames}{\blx@maxbibnames}%
+    \usebibmacro{prenote}}
+  {\usedriver
+     {\DeclareNameAlias{sortname}{default}}
+     {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\makeatother

@@ -1,5 +1,7 @@
 \usepackage[backend=biber,style=authoryear-comp]{biblatex}
 
+\input{patches}
+
 \ExecuteBibliographyOptions{sorting=ynt} %Year, name, title. Ensures that in-text citations are ordered chronologically.
 \assignrefcontextentries[]{*} %Assigns all citations to the global refcontext, the sorting above.
 %We will use a different refcontext around the bibliography to sort that by name.
