@@ -1,0 +1,26 @@
+\usepackage[backend=biber,style=publist]{biblatex}
+
+\input{patches}
+
+%Set up biblatex-publist's author highlighting.
+\plauthorname[Christopher R P]{Brown}
+\ExecuteBibliographyOptions{plauthorhandling=highlight}
+
+%Disable biblatex-publist's year highlighting.
+\ExecuteBibliographyOptions{boldyear=false}
+%TODO: In version 2.0 of biblatex-publist (2022-10-24), boldyear is renamed to hlyear. Once I update my OS, I should update this.
+
+\ExecuteBibliographyOptions{sorting=ddnt} %Date (descending), name, title.
+%TODO: Double check this is working correctly; see biblatex-publist's documentation for alternatives.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Number of authors to list.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{maxnames=9999} %Always list all authors.
+
+%%%%%%%%%%%%%
+%Misc. fixes.
+%%%%%%%%%%%%%
+
+\ExecuteBibliographyOptions{dashed=false} %Ensure that two papers by the same author are listed in full in the bibliography.
