@@ -150,3 +150,32 @@
 %%%%%%%%
 
 \DeclareFieldFormat[online]{title}{#1} %No italics in online title.
+
+
+%%%%%%
+%Misc.
+%%%%%%
+
+\DeclareFieldFormat[misc]{title}{#1} %No italics in misc title.
+
+
+%%%%%%%%
+%Theses.
+%%%%%%%%
+
+\DeclareFieldFormat[thesis]{title}{#1} %No quotes around thesis title.
+
+%Swap so that institution comes *before* location, and is separated by a comma rather than a colon.
+\xpatchbibmacro{institution+location+date}{%
+	\printlist{location}%
+	\iflistundef{institution}
+		{\setunit*{\addcomma\space}}
+		{\setunit*{\addcolon\space}}%
+	\printlist{institution}%
+}{%
+	\printlist{institution}%
+	\iflistundef{location}
+		{}
+		{\setunit*{\addcomma\space}}%%
+	\printlist{location}%
+}{}{}
