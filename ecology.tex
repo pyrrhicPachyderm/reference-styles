@@ -72,6 +72,14 @@
 	\printtext%
 }{}{}
 
+%Add a full stop after pubstate.
+\xpatchbibmacro{addendum+pubstate}{%
+	\printfield{pubstate}%
+}{%
+	\printfield{pubstate}%
+	\iffieldundef{pubstate}{}{\addperiod}%
+}{}{}
+
 %%%%%%%%%%
 %Articles.
 %%%%%%%%%%
